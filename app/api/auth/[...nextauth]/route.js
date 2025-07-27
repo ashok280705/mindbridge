@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
+import Doctor from "@/models/Doctor"; // ✅ import your Doctor model
 import bcrypt from "bcryptjs";
 
 export const authOptions = {
@@ -12,23 +13,35 @@ export const authOptions = {
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        isDoctor: { label: "Doctor Login", type: "text" }, // 👈 hidden input for role
       },
       async authorize(credentials) {
         await dbConnect();
 
-        const user = await User.findOne({ email: credentials.email });
+        let account;
 
-        if (!user) throw new Error("No user found");
+        if (credentials.isDoctor === "true") {
+          // ✅ Doctor login
+          account = await Doctor.findOne({ email: credentials.email });
+        } else {
+          // ✅ User login
+          account = await User.findOne({ email: credentials.email });
+        }
 
-        const isValid = await bcrypt.compare(credentials.password, user.password);
+        if (!account) throw new Error("No account found");
+
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          account.password
+        );
         if (!isValid) throw new Error("Invalid password");
 
-        // ✅ NextAuth expects a plain object — NOT a full mongoose doc
+        // ✅ return plain object
         return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          googleId: user.googleId || null,
+          id: account._id.toString(),
+          name: account.name,
+          email: account.email,
+          isDoctor: credentials.isDoctor === "true",
         };
       },
     }),
@@ -40,45 +53,16 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async signIn({ user, account, profile }) {
-      await dbConnect();
-
-      if (account.provider === "google") {
-        const existingUser = await User.findOne({ email: user.email });
-
-        if (!existingUser) {
-          // Create new Google user
-          await User.create({
-            name: user.name,
-            email: user.email,
-            googleId: profile.sub,
-          });
-        } else if (!existingUser.googleId) {
-          existingUser.googleId = profile.sub;
-          await existingUser.save();
-        }
-      }
-
-      return true;
-    },
-
     async session({ session, token }) {
-      await dbConnect();
-      const dbUser = await User.findOne({ email: session.user.email });
-
-      if (dbUser) {
-        session.user.id = dbUser._id.toString();
-        session.user.googleId = dbUser.googleId || null;
-      }
-
+      session.user.id = token.id;
+      session.user.isDoctor = token.isDoctor || false;
       return session;
     },
 
     async jwt({ token, user }) {
-      // When using credentials, `user` only exists on first sign in
       if (user) {
         token.id = user.id;
-        token.googleId = user.googleId || null;
+        token.isDoctor = user.isDoctor || false;
       }
       return token;
     },

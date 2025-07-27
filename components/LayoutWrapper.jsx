@@ -9,7 +9,7 @@ export default function LayoutWrapper({ children }) {
   
   // Hide Navbar & Footer on these pages
   const hideLayout =
-    pathname === "/" || pathname === "/login" || pathname === "/register";
+    pathname === "/" || pathname === "/login" || pathname === "/register" || pathname === "/Doctor" || pathname === "/register-doctor";
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 text-gray-900">
