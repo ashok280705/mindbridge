@@ -49,7 +49,7 @@ export default function DashboardPage() {
                 Talk to our AI-powered counselor anytime. Get personalized guidance, emotional support, and professional mental health assistance.
               </p>
               
-              <Link href="/chat" className="block">
+              <Link href="/mental-counselor" className="block">
                 <button className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-4 px-6 rounded-2xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group">
                   <MessageSquareHeart className="w-5 h-5" />
                   <span>Start Session</span>
