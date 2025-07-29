@@ -9,23 +9,96 @@ export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [music, setMusic] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
   const messagesEndRef = useRef(null);
 
   const musicLibrary = [
-    { name: "Gentle Mind - Relaxing Piano", url: "https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" },
-    { name: "Peaceful Waters - Nature Sounds", url: "https://www.bensound.com/bensound-music/bensound-dreams.mp3" },
-    { name: "Meditation Bell - Mindfulness", url: "https://www.bensound.com/bensound-music/bensound-relaxing.mp3" },
-    { name: "Soft Rain - Sleep Sounds", url: "https://www.bensound.com/bensound-music/bensound-tenderness.mp3" },
+    {
+      name: "Gentle Mind - Relaxing Piano",
+      url: "https://www.bensound.com/bensound-music/bensound-slowmotion.mp3",
+    },
+    {
+      name: "Peaceful Waters - Nature Sounds",
+      url: "https://www.bensound.com/bensound-music/bensound-dreams.mp3",
+    },
+    {
+      name: "Meditation Bell - Mindfulness",
+      url: "https://www.bensound.com/bensound-music/bensound-relaxing.mp3",
+    },
+    {
+      name: "Soft Rain - Sleep Sounds",
+      url: "https://www.bensound.com/bensound-music/bensound-tenderness.mp3",
+    },
   ];
 
+  // ✅ Combine keyword detection AND every 5th message logic
   const onSuggestMusic = (text) => {
-    const stressKeywords = ["sad", "depressed", "anxious", "worried", "stressed", "overwhelmed", "lonely", "alone", "tired", "exhausted", "panic", "nervous"];
+    const stressKeywords = [
+      "sad",
+      "depressed",
+      "depression",
+      "hopeless",
+      "helpless",
+      "anxious",
+      "anxiety",
+      "worried",
+      "worry",
+      "stressed",
+      "stress",
+      "overwhelmed",
+      "burned out",
+      "burnout",
+      "lonely",
+      "alone",
+      "isolated",
+      "isolating",
+      "exhausted",
+      "fatigued",
+      "tired",
+      "sleepy",
+      "panic",
+      "panic attack",
+      "nervous",
+      "fear",
+      "scared",
+      "afraid",
+      "crying",
+      "cry",
+      "tears",
+      "upset",
+      "frustrated",
+      "angry",
+      "worthless",
+      "useless",
+      "numb",
+      "empty",
+      "nothing",
+      "pointless",
+      "meaningless",
+      "can't cope",
+      "can’t cope",
+      "lost",
+      "broken",
+      "pain",
+      "hurt",
+      "hurting",
+      "low",
+      "low mood",
+      "giving up",
+      "give up",
+    ];
     const textLower = text.toLowerCase();
-    
-    const hasStressKeyword = stressKeywords.some(keyword => textLower.includes(keyword));
-    
-    if (hasStressKeyword) {
-      const randomMusic = musicLibrary[Math.floor(Math.random() * musicLibrary.length)];
+
+    const hasStressKeyword = stressKeywords.some((keyword) =>
+      textLower.includes(keyword)
+    );
+    const nextMessageCount = messageCount + 1;
+
+    setMessageCount(nextMessageCount);
+
+    if (hasStressKeyword || nextMessageCount % 5 === 0) {
+      const randomMusic =
+        musicLibrary[Math.floor(Math.random() * musicLibrary.length)];
       setTimeout(() => setMusic(randomMusic), 2500);
     }
   };
@@ -57,8 +130,12 @@ export default function ChatPage() {
               <Heart size={20} className="text-white" />
             </div>
             <div className="text-center">
-              <h1 className="text-xl font-semibold text-gray-800">MindfulChat</h1>
-              <p className="text-sm text-gray-600">Your compassionate AI counselor</p>
+              <h1 className="text-xl font-semibold text-gray-800">
+                MindfulChat
+              </h1>
+              <p className="text-sm text-gray-600">
+                Your compassionate AI counselor
+              </p>
             </div>
           </div>
         </div>
@@ -67,8 +144,6 @@ export default function ChatPage() {
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-4xl mx-auto px-6 py-8">
-          
-          {/* Welcome message when no messages */}
           {messages.length === 0 && (
             <motion.div
               className="text-center py-12"
@@ -78,31 +153,43 @@ export default function ChatPage() {
               <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center">
                 <MessageCircle size={32} className="text-white" />
               </div>
-              
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Welcome to MindfulChat</h2>
+
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Welcome to MindfulChat
+              </h2>
               <p className="text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-                This is a safe, judgment-free space where you can share your thoughts and feelings. 
-                I'm here to listen and provide support whenever you need it.
+                This is a safe, judgment-free space where you can share your
+                thoughts and feelings. I'm here to listen and provide support
+                whenever you need it.
               </p>
 
-              {/* Feature highlights */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
                 <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                   <Clock className="text-indigo-600 mb-3 mx-auto" size={24} />
-                  <h3 className="font-medium text-gray-800 mb-2">Available 24/7</h3>
-                  <p className="text-gray-600 text-sm">Always here when you need support</p>
+                  <h3 className="font-medium text-gray-800 mb-2">
+                    Available 24/7
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    Always here when you need support
+                  </p>
                 </div>
-                
                 <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                   <Shield className="text-indigo-600 mb-3 mx-auto" size={24} />
-                  <h3 className="font-medium text-gray-800 mb-2">Confidential</h3>
-                  <p className="text-gray-600 text-sm">Your conversations are private and secure</p>
+                  <h3 className="font-medium text-gray-800 mb-2">
+                    Confidential
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    Your conversations are private and secure
+                  </p>
                 </div>
-                
                 <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                   <Heart className="text-indigo-600 mb-3 mx-auto" size={24} />
-                  <h3 className="font-medium text-gray-800 mb-2">Compassionate</h3>
-                  <p className="text-gray-600 text-sm">Non-judgmental support with empathy</p>
+                  <h3 className="font-medium text-gray-800 mb-2">
+                    Compassionate
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    Non-judgmental support with empathy
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -114,23 +201,34 @@ export default function ChatPage() {
               {messages.map((msg, idx) => (
                 <motion.div
                   key={idx}
-                  className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}
+                  className={`flex ${
+                    msg.from === "user" ? "justify-end" : "justify-start"
+                  }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ delay: idx * 0.1 }}
                 >
-                  <div className={`max-w-md lg:max-w-lg p-4 rounded-2xl shadow-sm ${
-                    msg.from === "user"
-                      ? "bg-indigo-600 text-white"
-                      : "bg-white text-gray-800 border border-gray-100"
-                  }`}>
+                  <div
+                    className={`max-w-md lg:max-w-lg p-4 rounded-2xl shadow-sm ${
+                      msg.from === "user"
+                        ? "bg-indigo-600 text-white"
+                        : "bg-white text-gray-800 border border-gray-100"
+                    }`}
+                  >
                     <p className="leading-relaxed">{msg.text}</p>
                     {msg.timestamp && (
-                      <p className={`text-xs mt-2 ${
-                        msg.from === "user" ? "text-indigo-100" : "text-gray-500"
-                      }`}>
-                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <p
+                        className={`text-xs mt-2 ${
+                          msg.from === "user"
+                            ? "text-indigo-100"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {msg.timestamp.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       </p>
                     )}
                   </div>
@@ -138,7 +236,6 @@ export default function ChatPage() {
               ))}
             </AnimatePresence>
 
-            {/* Typing indicator */}
             {isTyping && (
               <motion.div
                 className="flex justify-start"
@@ -155,7 +252,9 @@ export default function ChatPage() {
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
                   </div>
-                  <span className="text-gray-500 text-sm">Counselor is typing...</span>
+                  <span className="text-gray-500 text-sm">
+                    Counselor is typing...
+                  </span>
                 </div>
               </motion.div>
             )}
@@ -166,12 +265,12 @@ export default function ChatPage() {
       </div>
 
       {/* Chat Input */}
-      <ChatBox 
-        setMessages={setMessages} 
+      <ChatBox
+        setMessages={setMessages}
         onSuggestMusic={onSuggestMusic}
         messages={messages}
       />
-      
+
       {/* Music Modal */}
       <MusicModal music={music} onClose={() => setMusic(null)} />
     </div>

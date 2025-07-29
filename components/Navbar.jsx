@@ -115,7 +115,7 @@ export default function Navbar() {
               className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden"
             >
               <Link
-                href="/profile"
+                href="/ProfileForm"
                 className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:bg-purple-50"
                 onClick={() => setDropdownOpen(false)}
               >
