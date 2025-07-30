@@ -1,30 +1,44 @@
 "use client";
 
+import { useEffect } from "react";
+import { io } from "socket.io-client";
+
 export default function DoctorDashboardPage() {
+  useEffect(() => {
+    const socket = io("http://localhost:3000");
+
+    // Doctor listens for new patient requests
+    socket.on("new_patient_request", (data) => {
+      console.log("🚨 New patient request:", data);
+      // You can show a notification or auto-join, etc.
+    });
+
+    // Example: Join a room if accepted
+    const roomId = "SOME_ROOM_ID";
+    socket.emit("joinRoom", roomId);
+
+    // Example: Send message to room
+    socket.emit("sendMessage", {
+      roomId,
+      sender: "doctor",
+      text: "Hello, I’m here to help you now!",
+    });
+
+    // Listen for incoming messages
+    socket.on("receiveMessage", (msg) => {
+      console.log("📨 Message in room:", msg);
+    });
+
+    // Cleanup
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">👨‍⚕️ Doctor Dashboard</h1>
-      <p className="text-gray-700 mb-8">
-        Welcome back, Doctor! Here you can manage your appointments, view patient reports, and update your availability.
-      </p>
-
-      {/* ✅ Example sections */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold mb-2">Today&apos;s Appointments</h2>
-          <p className="text-gray-500">5 appointments scheduled</p>
-        </div>
-
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold mb-2">New Messages</h2>
-          <p className="text-gray-500">2 unread messages</p>
-        </div>
-
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold mb-2">Patient Requests</h2>
-          <p className="text-gray-500">3 pending requests</p>
-        </div>
-      </div>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold">👨‍⚕️ Doctor Dashboard</h1>
+      <p className="mt-4 text-gray-600">Listening for patient requests and messages...</p>
     </div>
   );
 }
