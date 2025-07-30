@@ -1,7 +1,9 @@
+// app/api/counselor/chat/route.js
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
-import Message from "@/models/Message";
+import CounselorMessage from "@/models/CounselorMessage";
 import Room from "@/models/Room";
 import sendWhatsApp from "@/lib/sendWhatsApp";
 
@@ -19,7 +21,7 @@ export async function POST(req) {
   }
 
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: `Counselor help: "${message}"` }] }],
@@ -27,52 +29,59 @@ export async function POST(req) {
 
   const aiResponse = result.response.text();
   const normalized = aiResponse.toLowerCase();
-
   const dangerWords = ["suicide", "kill myself", "end my life", "self harm", "unalive"];
   const flagged = dangerWords.some(w => normalized.includes(w) || message.toLowerCase().includes(w));
 
   let room = await Room.findOne({ user: user._id, status: "pending" });
   if (!room) {
-    room = await Room.create({ user: user._id, messages: [], dangerCount: 0 });
+    room = await Room.create({
+      user: user._id,
+      counselorMessages: [],
+      doctorPatientMessages: [],
+      dangerCount: 0,
+    });
   }
 
-  const userMsg = await Message.create({
+  if (!room.counselorMessages) room.counselorMessages = [];
+
+  const userMsg = await CounselorMessage.create({
     room: room._id,
     user: user._id,
     sender: "user",
     text: message,
   });
 
-  const aiMsg = await Message.create({
+  const aiMsg = await CounselorMessage.create({
     room: room._id,
     sender: "ai",
     text: aiResponse,
   });
 
-  room.messages.push(userMsg._id, aiMsg._id);
+  room.counselorMessages.push(userMsg._id, aiMsg._id);
   if (flagged) room.dangerCount += 1;
+
   await room.save();
 
-  if (flagged) {
-    if (global._io) {
-      global._io.emit("new_patient_request", {
-        roomId: room._id,
-        userEmail: user.email,
-        latestMessage: message,
-      });
-    }
-
-    if (room.dangerCount === 1 && user.emergency) {
-      await sendWhatsApp(user.emergency, `🚨 ALERT: ${user.name} may be in crisis.`);
-    } else if (room.dangerCount >= 2 && user.emergency) {
-      global._io?.emit("escalate_patient_request", {
-        roomId: room._id,
-        userEmail: user.email,
-        reason: "Multiple crisis signals detected",
-      });
-      await sendWhatsApp(user.emergency, `🚨🚨 URGENT: ${user.name} may be at immediate risk!`);
-    }
+  if (flagged && global._io) {
+    global._io.emit("new_patient_request", {
+      roomId: room._id.toString(),
+      userEmail: user.email,
+      latestMessage: message,
+    });
   }
+
+  // if (flagged && user.emergency) {
+  //   if (room.dangerCount === 1) {
+  //     await sendWhatsApp(user.emergency, `🚨 ALERT: ${user.name} may be in crisis.`);
+  //   } else if (room.dangerCount >= 2) {
+  //     global._io?.emit("escalate_patient_request", {
+  //       roomId: room._id.toString(),
+  //       userEmail: user.email,
+  //       reason: "Multiple crisis signals detected",
+  //     });
+  //     await sendWhatsApp(user.emergency, `🚨🚨 URGENT: ${user.name} may be at immediate risk!`);
+  //   }
+  // }
 
   return new Response(JSON.stringify({ reply: aiResponse }), { status: 200 });
 }

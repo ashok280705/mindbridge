@@ -151,7 +151,7 @@ export default function MentalCounselorDashboardPage() {
                 Manage your menstrual cycle, get reminders, and health tips
                 designed just for you.
               </p>
-              <Link href="/mental-counselor/PeriodTracker">
+              <Link href="/mental-counselor/period-tracker">
                 <button className="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white py-4 px-6 rounded-2xl font-semibold hover:shadow-xl transform hover:scale-105 flex items-center justify-center space-x-2">
                   <CalendarHeart className="w-5 h-5" />
                   <span>Track Cycle</span>
