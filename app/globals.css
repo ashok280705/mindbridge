@@ -1,3 +1,29 @@
 @import "tailwindcss";
 
 
+.period-form input,
+.period-form select,
+.period-form textarea {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.period-form label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.period-form button {
+  background: #6366f1;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.period-form button:hover {
+  background: #4f46e5;
+}
