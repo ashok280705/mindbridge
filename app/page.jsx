@@ -1,12 +1,18 @@
 'use client'
-import  { useState, useEffect } from 'react';
-import { Heart, Shield, Clock, Users, Star, ArrowRight, Phone, Mail, MapPin, CheckCircle, Brain, Stethoscope, MessageCircle, Calendar, Award, Globe } from 'lucide-react';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { 
+  Heart, Shield, Clock, Users, Star, ArrowRight, Phone, Mail, MapPin, 
+  CheckCircle, Brain, Stethoscope, MessageCircle, Calendar, Award, Globe 
+} from 'lucide-react';
 
 export default function MindBridgeLanding() {
+  const router = useRouter();
   const [currentText, setCurrentText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  
+
   const phrases = [
     "Your trusted 24/7 mental wellness companion",
     "AI-powered support when you need it most",
@@ -17,7 +23,6 @@ export default function MindBridgeLanding() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       const currentPhrase = phrases[currentIndex];
-      
       if (!isDeleting) {
         if (currentText !== currentPhrase) {
           setCurrentText(currentPhrase.slice(0, currentText.length + 1));
@@ -35,7 +40,7 @@ export default function MindBridgeLanding() {
     }, isDeleting ? 50 : 100);
 
     return () => clearTimeout(timeout);
-  }, [currentText, currentIndex, isDeleting, phrases]);
+  }, [currentText, currentIndex, isDeleting]);
 
   const services = [
     {
@@ -106,10 +111,16 @@ export default function MindBridgeLanding() {
               <a href="#contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
             </nav>
             <div className="flex space-x-3">
-              <button className="px-4 py-2 text-blue-600 hover:text-blue-700 transition-colors">
+              <button 
+                onClick={() => router.push('/login')}
+                className="px-4 py-2 text-blue-600 hover:text-blue-700 transition-colors"
+              >
                 Sign In
               </button>
-              <button className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+              <button 
+                onClick={() => router.push('/login')}
+                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+              >
                 Get Started
               </button>
             </div>

@@ -1,3 +1,4 @@
+
 "use client";
 import React from 'react';
 import Link from 'next/link';
@@ -77,7 +78,7 @@ export default function DashboardPage() {
               <Link href="/reports" className="block">
                 <button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 px-6 rounded-2xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group">
                   <FileText className="w-5 h-5" />
-                  <span>View Reports</span>
+                  <span>Analyze Reports</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>

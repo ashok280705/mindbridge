@@ -1,32 +1,37 @@
 import dbConnect from "@/lib/dbConnect";
 import PeriodEntry from "@/models/PeriodEntry";
 import User from "@/models/User";
+import mongoose from "mongoose";
 
 export async function POST(req) {
   try {
-    // 1️⃣ Parse incoming JSON
     const body = await req.json();
-    const { userId, startDate, endDate, flowLevel, painLevel, mood, symptoms, notes } = body;
+    const {
+      userId, startDate, endDate,
+      flowLevel, painLevel, mood, symptoms, notes
+    } = body;
 
-    // 2️⃣ Validate required fields
     if (!userId || !startDate) {
-      return new Response(JSON.stringify({ error: "Missing required fields: userId or startDate" }), {
-        status: 400,
-      });
+      return new Response(JSON.stringify({ error: "Missing required fields" }), { status: 400 });
     }
 
-    // 3️⃣ Connect to DB
     await dbConnect();
 
-    // 4️⃣ Check if user exists
-    const user = await User.findById(userId);
+    let user;
+
+    // ✅ If userId is valid ObjectId, find by _id, else try googleId
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      user = await User.findById(userId);
+    } else {
+      user = await User.findOne({ googleId: userId });
+    }
+
     if (!user) {
       return new Response(JSON.stringify({ error: "User not found" }), { status: 404 });
     }
 
-    // 5️⃣ Create new PeriodEntry
     const entry = new PeriodEntry({
-      userId,
+      userId: user._id,  // ✅ Save real Mongo _id
       startDate,
       endDate,
       flowLevel,
