@@ -1,140 +1,257 @@
 
 "use client";
-import React from 'react';
-import Link from 'next/link';
-import { Brain, FileText, ShoppingBag, ArrowRight, MessageSquareHeart, Shield, Clock, Star } from 'lucide-react';
 
-export default function DashboardPage() {
-  return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 md:px-6 py-20 mt-16">
-      <div className="max-w-6xl mx-auto">
-        
-        {/* Welcome Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Welcome to <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">MindBridge</span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Your complete mental wellness platform. Choose your path to better mental health.
-          </p>
-          
-          {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center items-center gap-6 mt-8">
-            <div className="flex items-center space-x-2 bg-green-100 px-4 py-2 rounded-full">
-              <Shield className="w-4 h-4 text-green-600" />
-              <span className="text-green-700 text-sm font-medium">100% Confidential</span>
-            </div>
-            <div className="flex items-center space-x-2 bg-blue-100 px-4 py-2 rounded-full">
-              <Clock className="w-4 h-4 text-blue-600" />
-              <span className="text-blue-700 text-sm font-medium">24/7 Available</span>
-            </div>
-            <div className="flex items-center space-x-2 bg-yellow-100 px-4 py-2 rounded-full">
-              <Star className="w-4 h-4 text-yellow-600" />
-              <span className="text-yellow-700 text-sm font-medium">4.9/5 Rating</span>
-            </div>
-          </div>
-        </div>
+import { useState } from "react";
+import { Edit, Trash2, Save, X, Calendar, Droplets, AlertCircle } from "lucide-react";
 
-        {/* Main Services - 3 Cards */}
-        <div className="grid gap-8 md:grid-cols-3 mb-16">
-          
-          {/* Mental Counselor */}
-          <div className="group bg-white rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-blue-300 transition-all duration-500 overflow-hidden">
-            <div className="p-8 text-center">
-              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <Brain className="w-10 h-10 text-white" />
-              </div>
-              
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Mental Counselor</h2>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Talk to our AI-powered counselor anytime. Get personalized guidance, emotional support, and professional mental health assistance.
-              </p>
-              
-              <Link href="/mental-counselor" className="block">
-                <button className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-4 px-6 rounded-2xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group">
-                  <MessageSquareHeart className="w-5 h-5" />
-                  <span>Start Session</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </Link>
-            </div>
-            
-            {/* Bottom accent */}
-            <div className="h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-          </div>
+export default function PeriodHistory({ entries }) {
+  const [editingId, setEditingId] = useState(null);
+  const [editData, setEditData] = useState({});
 
-          {/* Reports Analyzer */}
-          <div className="group bg-white rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-green-300 transition-all duration-500 overflow-hidden">
-            <div className="p-8 text-center">
-              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <FileText className="w-10 h-10 text-white" />
-              </div>
-              
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Reports Analyzer</h2>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Track your mental health journey with detailed analytics, mood patterns, and AI-powered insights for better self-awareness.
-              </p>
-              
-              <Link href="/reports" className="block">
-                <button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 px-6 rounded-2xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group">
-                  <FileText className="w-5 h-5" />
-                  <span>Analyze Reports</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </Link>
-            </div>
-            
-            {/* Bottom accent */}
-            <div className="h-2 bg-gradient-to-r from-green-500 to-emerald-600"></div>
-          </div>
-
-          {/* Pharmacy */}
-          <div className="group bg-white rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-purple-300 transition-all duration-500 overflow-hidden">
-            <div className="p-8 text-center">
-              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <ShoppingBag className="w-10 h-10 text-white" />
-              </div>
-              
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Wellness Pharmacy</h2>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Access trusted wellness products, supplements, and medications recommended by certified mental health professionals.
-              </p>
-              
-              <Link href="/pharmacy" className="block">
-                <button className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-4 px-6 rounded-2xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 group">
-                  <ShoppingBag className="w-5 h-5" />
-                  <span>Browse Store</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </Link>
-            </div>
-            
-            {/* Bottom accent */}
-            <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-600"></div>
-          </div>
-        </div>
-
-        {/* Bottom CTA Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-8 md:p-12 text-white text-center">
-          <h3 className="text-3xl font-bold mb-4">Ready to Start Your Wellness Journey?</h3>
-          <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
-            Take the first step towards better mental health. Our AI-powered platform is here to support you every step of the way.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/chat">
-              <button className="bg-white text-blue-700 px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">
-                <MessageSquareHeart className="w-5 h-5" />
-                <span>Start Free Session</span>
-              </button>
-            </Link>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-blue-700 transition-all duration-300">
-              Learn More
-            </button>
-          </div>
-        </div>
-
+  if (!entries || entries.length === 0) {
+    return (
+      <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-200">
+        <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">No Period Entries Yet</h3>
+        <p className="text-gray-500 mb-6">Start tracking your cycle to see patterns and insights.</p>
+        <a 
+          href="/mental-counselor/period-tracker/add"
+          className="inline-flex items-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition-colors font-medium"
+        >
+          <Droplets className="w-4 h-4" />
+          Add Your First Entry
+        </a>
       </div>
-    </main>
+    );
+  }
+
+  const handleEdit = (entry) => {
+    setEditingId(entry._id);
+    setEditData({
+      startDate: entry.startDate ? new Date(entry.startDate).toISOString().split('T')[0] : '',
+      endDate: entry.endDate ? new Date(entry.endDate).toISOString().split('T')[0] : '',
+      flowLevel: entry.flowLevel || 'normal',
+      painLevel: entry.painLevel || 0,
+      mood: entry.mood || '',
+      symptoms: entry.symptoms || [],
+      notes: entry.notes || ''
+    });
+  };
+
+  const handleSave = async (entryId) => {
+    try {
+      const PERIOD_STORAGE_KEY = 'mindbridge_period_entries';
+      
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem(PERIOD_STORAGE_KEY);
+        const entries = stored ? JSON.parse(stored) : [];
+        const index = entries.findIndex(entry => (entry.id || entry._id) === entryId);
+        
+        if (index !== -1) {
+          entries[index] = { ...entries[index], ...editData };
+          localStorage.setItem(PERIOD_STORAGE_KEY, JSON.stringify(entries));
+          setEditingId(null);
+          window.location.reload(); // Refresh to show updated data
+        } else {
+          alert("Failed to update entry");
+        }
+      }
+    } catch (error) {
+      console.error("Error updating entry:", error);
+      alert("Failed to update entry");
+    }
+  };
+
+  const handleDelete = async (entryId) => {
+    if (!confirm("Are you sure you want to delete this entry?")) return;
+
+    try {
+      const PERIOD_STORAGE_KEY = 'mindbridge_period_entries';
+      
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem(PERIOD_STORAGE_KEY);
+        const entries = stored ? JSON.parse(stored) : [];
+        const filtered = entries.filter(entry => (entry.id || entry._id) !== entryId);
+        
+        localStorage.setItem(PERIOD_STORAGE_KEY, JSON.stringify(filtered));
+        window.location.reload(); // Refresh to remove deleted entry
+      }
+    } catch (error) {
+      console.error("Error deleting entry:", error);
+      alert("Failed to delete entry");
+    }
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+    setEditData({});
+  };
+
+  const getFlowColor = (flowLevel) => {
+    switch (flowLevel) {
+      case 'light': return 'bg-blue-100 text-blue-800';
+      case 'heavy': return 'bg-red-100 text-red-800';
+      default: return 'bg-green-100 text-green-800';
+    }
+  };
+
+  const getPainColor = (painLevel) => {
+    if (painLevel <= 3) return 'text-green-600';
+    if (painLevel <= 6) return 'text-yellow-600';
+    return 'text-red-600';
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-pink-50 border-b border-pink-100">
+              <th className="p-4 text-left font-semibold text-pink-800">Start Date</th>
+              <th className="p-4 text-left font-semibold text-pink-800">End Date</th>
+              <th className="p-4 text-left font-semibold text-pink-800">Flow Level</th>
+              <th className="p-4 text-left font-semibold text-pink-800">Pain Level</th>
+              <th className="p-4 text-left font-semibold text-pink-800">Mood</th>
+              <th className="p-4 text-left font-semibold text-pink-800">Notes</th>
+              <th className="p-4 text-left font-semibold text-pink-800">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((entry, index) => (
+              <tr key={`entry-${entry._id}-${index}`} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                {editingId === entry._id ? (
+                  <>
+                    <td className="p-4">
+                      <input
+                        type="date"
+                        value={editData.startDate}
+                        onChange={(e) => setEditData({...editData, startDate: e.target.value})}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                      />
+                    </td>
+                    <td className="p-4">
+                      <input
+                        type="date"
+                        value={editData.endDate}
+                        onChange={(e) => setEditData({...editData, endDate: e.target.value})}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                      />
+                    </td>
+                    <td className="p-4">
+                      <select
+                        value={editData.flowLevel}
+                        onChange={(e) => setEditData({...editData, flowLevel: e.target.value})}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                      >
+                        <option value="light">Light</option>
+                        <option value="normal">Normal</option>
+                        <option value="heavy">Heavy</option>
+                      </select>
+                    </td>
+                    <td className="p-4">
+                      <input
+                        type="number"
+                        min="0"
+                        max="10"
+                        value={editData.painLevel}
+                        onChange={(e) => setEditData({...editData, painLevel: parseInt(e.target.value)})}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                      />
+                    </td>
+                    <td className="p-4">
+                      <input
+                        type="text"
+                        value={editData.mood}
+                        onChange={(e) => setEditData({...editData, mood: e.target.value})}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                        placeholder="Happy, Tired, etc."
+                      />
+                    </td>
+                    <td className="p-4">
+                      <textarea
+                        value={editData.notes}
+                        onChange={(e) => setEditData({...editData, notes: e.target.value})}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                        rows="2"
+                        placeholder="Additional notes..."
+                      />
+                    </td>
+                    <td className="p-4">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleSave(entry._id)}
+                          className="p-2 text-green-600 hover:text-green-800 hover:bg-green-100 rounded-md transition-colors"
+                          title="Save changes"
+                        >
+                          <Save size={16} />
+                        </button>
+                        <button
+                          onClick={handleCancel}
+                          className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
+                          title="Cancel editing"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="p-4">
+                      <div className="font-medium text-gray-900">
+                        {entry.startDate ? new Date(entry.startDate).toLocaleDateString() : '-'}
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="text-gray-700">
+                        {entry.endDate ? new Date(entry.endDate).toLocaleDateString() : '-'}
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getFlowColor(entry.flowLevel)}`}>
+                        {entry.flowLevel || 'Normal'}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <div className={`font-medium ${getPainColor(entry.painLevel)}`}>
+                        {entry.painLevel || 0}/10
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="text-gray-700">
+                        {entry.mood || '-'}
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="text-gray-700 max-w-xs truncate" title={entry.notes}>
+                        {entry.notes || '-'}
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEdit(entry)}
+                          className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded-md transition-colors"
+                          title="Edit entry"
+                        >
+                          <Edit size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(entry._id)}
+                          className="p-2 text-red-600 hover:text-red-800 hover:bg-red-100 rounded-md transition-colors"
+                          title="Delete entry"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }

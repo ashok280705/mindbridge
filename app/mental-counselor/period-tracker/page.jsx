@@ -59,7 +59,7 @@ export default function PeriodTrackerDashboard() {
   };
 
   return (
-    <main className="p-8 max-w-6xl mx-auto bg-gradient-to-br from-pink-50 to-purple-50 min-h-screen">
+    <main className="mt-16 p-8 max-w-6xl mx-auto bg-gradient-to-br from-pink-50 to-purple-50 min-h-screen">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
           Period Tracker Pro

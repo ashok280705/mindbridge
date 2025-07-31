@@ -72,7 +72,7 @@ export default function DashboardPage() {
               
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Reports Analyzer</h2>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Track your mental health journey with detailed analytics, mood patterns, and AI-powered insights for better self-awareness.
+                Upload your medical reports and get AI-powered insights about your health trends, patterns, and personalized recommendations.
               </p>
               
               <Link href="/reports" className="block">
@@ -122,7 +122,7 @@ export default function DashboardPage() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/chat">
+            <Link href="/mental-counselor">
               <button className="bg-white text-blue-700 px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">
                 <MessageSquareHeart className="w-5 h-5" />
                 <span>Start Free Session</span>
